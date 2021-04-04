@@ -1,0 +1,65 @@
+D:\UserData\z0047pav\Adentis\Exercicio_celfocus>behave
+@Regression
+Feature: Product Subscription # ProductSubscription.feature:2
+  To test product subscription the site automatic test framework
+  1. Will open https://qa-automation-challenge.github.io/sandbox/
+  2. Select type "Special"
+  3. Select support plan  "Full"
+  4. Choose a duration of 6 months
+  5. Click the "Calculate" button
+  Expected Result: Price is 2249.10$
+  Scenario: Price calculation                                                                          # ProductSubscription.feature:11
+    Given The "chrome" browser is open in the URL "https://qa-automation-challenge.github.io/sandbox/" # steps/ProductSubscriptionSteps.py:4
+
+DevTools listening on ws://127.0.0.1:56033/devtools/browser/009f9ec2-b33c-4f2f-b337-71666d0e4ae6
+    When Select "type" "Special"                                                                       # steps/ProductSubscriptionSteps.py:9
+    And Select "support" "Full"                                                                        # steps/ProductSubscriptionSteps.py:9
+[22352:21632:0402/160122.501:ERROR:device_event_log_impl.cc(214)] [16:01:22.501] USB: usb_device_handle_win.cc:1056 Failed to read descriptor from node connection: Um dispositivo ligado ao sistema nÒo estß a funcionar. (0x1F)
+[22352:21632:0402/160122.509:ERROR:device_event_log_impl.cc(214)] [16:01:22.509] USB: usb_device_handle_win.cc:1056 Failed to read descriptor from node connection: Um dispositivo ligado ao sistema nÒo estß a funcionar. (0x1F)
+[22352:21632:0402/160122.511:ERROR:device_event_log_impl.cc(214)] [16:01:22.511] USB: usb_device_handle_win.cc:1056 Failed to read descriptor from node connection: Um dispositivo ligado ao sistema nÒo estß a funcionar. (0x1F)
+[22352:21632:0402/160122.514:ERROR:device_event_log_impl.cc(214)] [16:01:22.514] USB: usb_device_handle_win.cc:1056 Failed to read descriptor from node connection: Um dispositivo ligado ao sistema nÒo estß a funcionar. (0x1F)
+[22352:21632:0402/160122.520:ERROR:device_event_log_impl.cc(214)] [16:01:22.520] USB: usb_device_handle_win.cc:1056 Failed to read descriptor from node connection: Um dispositivo ligado ao sistema nÒo estß a funcionar. (0x1F)
+    And Choose a "duration" of "6" months                                                              # steps/ProductSubscriptionSteps.py:14
+    And Click the "calculate" "button"                                                                 # steps/ProductSubscriptionSteps.py:19
+    Then The text in "price" is "2249.10 $"                                                            # steps/ProductSubscriptionSteps.py:24
+
+@Regression
+Feature: Product Subscription # Users.feature:2
+  To test the USERS backend webservices the following tests have to be done
+  1. Using Post to      https://reqres.in/api/users create a user with "User" = "Toy" and "Job" = "Singer"
+  Expected Result: User is created.
+  Http status_code = 201.
+  Http Response contains the text "createdAt"
+  2. Delete user 2 in the following API https://reqres.in/api/users/${user}
+  Expected Result: The user was deleted
+  Http status_code = 204.
+  3. Submit a new register without password to https://reqres.in/api/register without password
+  and with "email"="challenge@automation.com"
+  Expected Result: The register is not successful due to the lack of password
+  Http status_code = 400.
+  Http Response contains the text "Missing password"
+  Scenario: 1. User Creation                                        # Users.feature:17
+    Given The API URL "https://reqres.in/api/users"                 # steps/UsersFeatureSteps.py:4
+    When The payload attribute "User" is "Toy"                      # steps/UsersFeatureSteps.py:11
+    And The payload attribute "Job" is "singer"                     # steps/UsersFeatureSteps.py:11
+    And A post to the API is done                                   # steps/UsersFeatureSteps.py:21
+    Then The http status code is "201"                              # steps/UsersFeatureSteps.py:31
+    And The text of the http response contains the text "createdAt" # steps/UsersFeatureSteps.py:38
+
+  Scenario: 2. User Deletion                            # Users.feature:25
+    Given The API URL "https://reqres.in/api/users/$%s" # steps/UsersFeatureSteps.py:4
+    When The user to be deleted is "2"                  # steps/UsersFeatureSteps.py:15
+    And A delete command is sent to the delete user API # steps/UsersFeatureSteps.py:25
+    Then The http status code is "204"                  # steps/UsersFeatureSteps.py:31
+
+  Scenario: 3. Submit a new register without password                      # Users.feature:31
+    Given The API URL "https://reqres.in/api/register"                     # steps/UsersFeatureSteps.py:4
+    When The payload attribute "email" is "challenge@automation.com"       # steps/UsersFeatureSteps.py:11
+    And A post to the API is done                                          # steps/UsersFeatureSteps.py:21
+    Then The http status code is "400"                                     # steps/UsersFeatureSteps.py:31
+    And The text of the http response contains the text "Missing password" # steps/UsersFeatureSteps.py:38
+
+2 features passed, 0 failed, 0 skipped
+4 scenarios passed, 0 failed, 0 skipped
+21 steps passed, 0 failed, 0 skipped, 0 undefined
+Took 0m22.945s
